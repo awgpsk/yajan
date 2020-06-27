@@ -6,8 +6,9 @@ class Plugins
 	var $filename;
 	function __construct()
 	{
-		global $FREAMWORK_PATH,$libVersion;
-		$this->filename = "$FREAMWORK_PATH/lib/$libVersion/data/plugins.conf";
+		global $FREAMWORK_PATH,$YAJAN_DATA,$libVersion;
+		$this->filename = "$YAJAN_DATA/data/plugins.conf";
+		// $this->filename = "$FREAMWORK_PATH/lib/$libVersion/data/plugins.conf";
 		$this->dx = new DataBox1_2("plugins");
 		$this->dx->fromFile($this->filename);
 		$this->list = $this->dx->getObject("list");

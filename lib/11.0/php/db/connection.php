@@ -78,7 +78,7 @@ class Connection
 			
 		}
 
-
+		
 		if($dbRegMode==false)
 		{
 
@@ -116,6 +116,7 @@ class Connection
 		$this->database = $this->adaptor->getDbHandel();
 		$this->startTime = $this->getmicrotime();
 		$this->scnLog = false;
+		
 	}
 	function getDriver()
 	{
@@ -246,6 +247,7 @@ class Connection
 		//$DB_REG->addDriver($parameter,$this->id);
 		
 		$this->adaptor->addDriver($parameter);
+		
 	}
 	function setRedoLog($file)
 	{
@@ -324,6 +326,7 @@ class Connection
 	}
 	function execute($q="",$auto_populate=true)
 	{
+		
 		if($q!="")
 		{	
 			
@@ -415,6 +418,7 @@ class Connection
 	}
 	function autoCommit($val,$all='')
 	{
+		
 		return $this->adaptor->autoCommit($val,$all);
 	}
 	function commit($all='')

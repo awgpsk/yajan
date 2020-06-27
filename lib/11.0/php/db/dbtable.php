@@ -11,6 +11,7 @@ class DBTable extends Recordset
 	var $requiredColumns;
 	var $condition;
 	var $orderBy;
+	var $skipColumn;
 	function __construct($name,$database)
 	{
 		parent::__construct();
@@ -24,6 +25,7 @@ class DBTable extends Recordset
 		$this->formulaColumn =array();
 		$this->condition=array();
 		$this->orderBy="";
+		$this->skipColumn = "";
 	}
 	function initDb()
 	{
@@ -204,8 +206,10 @@ class DBTable extends Recordset
 	}
 	function insert($insert=false,$autoCommit=false,$excludeColumns="")
 	{
+		
 		$this->db->autoCommit(false);
 		$resp = $this->_insert($insert,$excludeColumns);
+		
 		if($autoCommit)
 		{
 			if($resp)
@@ -217,6 +221,7 @@ class DBTable extends Recordset
 				$this->db->rollback();
 			}
 		}
+		
 		return $resp;
 	}
 	function update($whereList,$update=false,$autoCommit=false,$forceUpdate="",$excludeColumns="")
@@ -373,24 +378,34 @@ class DBTable extends Recordset
 				if(array_search($colName,$excludeColumns)===false)
 				{
 					$v = $this->data[$i][$colName];
-					if($this->columns[$j]->getType()=="DATE")
+					if($this->skipColumn==$colName && $v=="")
 					{
-						if($this->columns[$j]->getFormat()!="")
+							$skip = true;
+
+					}
+					else 
+					{
+						
+						
+						if($this->columns[$j]->getType()=="DATE")
 						{
-							$value.="to_date('".$v."','".$this->columns[$j]->getFormat()."'),";
+							if($this->columns[$j]->getFormat()!="")
+							{
+								$value.="to_date('".$v."','".$this->columns[$j]->getFormat()."'),";
+							}
+							else
+							{
+								$value.="'".$v."',";
+							}
 						}
 						else
 						{
 							$value.="'".$v."',";
 						}
-					}
-					else
-					{
-						$value.="'".$v."',";
-					}
-					if($colName!="")
-					{
-						$col.=$colName.",";
+						if($colName!="")
+						{
+							$col.=$colName.",";
+						}
 					}
 				}
 			}
@@ -796,6 +811,11 @@ class DBTable extends Recordset
 	 
 		$this->data[$this->recordPosition][$column] = $val;
 		return $val;
+	}
+	function skipNullRecord($code)
+	{
+			$code = strtoupper($code);
+			$this->skipColumn = $code;
 	}
 	
 }

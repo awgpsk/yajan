@@ -33,7 +33,11 @@ class EMErrorObject
 	var $sollution;
 	var $application;
 	var $type;
-	
+	var $extra;
+	function __construct()
+	{
+			$this->extra = null;
+	}
 	function upateArray($data)
 	{
 		$data["text"]=$this->text;
@@ -51,12 +55,17 @@ class EMErrorObject
 		}
 		return $data;
 	}
+	function extra($value)
+	{
+			$this->extra=$value;
+	}
 	function toArray()
 	{
 		$data = array();
 		$data["type"]=$this->type;
 		$data["text"]=$this->text;
 		$data["errorCode"]=$this->code;
+		$data["extra"]=$this->extra;
 		$data["errorDescription"]=$this->description;
 		if($this->reson!="")
 		{
@@ -74,6 +83,7 @@ class EMErrorObject
 		$data["type"]=$this->type;
 		$data["text"]=$this->text;
 		$data["errorCode"]=$this->code;
+		$data["extra"]=$this->extra;
 		$data["errorDescription"]=$this->description;
 		if($this->reson!="")
 		{
@@ -241,6 +251,7 @@ class EMService
 	}
 	function isSuccess(&$out=null)
 	{
+		
 		for($i=0;$i<count($this->list);$i++)
 		{
 			if($this->list[$i]->type!="success")
@@ -249,6 +260,7 @@ class EMService
 				return false;
 			}
 		}
+		
 		return true;
 	}
 
@@ -264,6 +276,7 @@ class EMService
 		}
 		return false;
 	}
+	
 	function success($message)
 	{
 		return $this->message("0","success",$message);

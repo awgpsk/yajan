@@ -85,16 +85,21 @@ class Open
 		}
 		$dbId = $db;
 		$sp = $DB_REG->getProperty($db);
+		// print_r($sp);
 		$dbName = $sp['name'];
 		$db = new Connection($sp);
+		
 		$CS->cout("Connected to DB ID $dbId($dbName).\n");
+		
 		if(!$db->autoCommit(false))
 		{
 			$CS->cout("NOTE!! Auto commit is on.\n");	
 		}
+		
 		$sql = "";
 		$colSize=30;
 		$oldSql = "";
+		
 		while($sql!="exit")
 		{
 			if($sql!="" and $sql != "exit")

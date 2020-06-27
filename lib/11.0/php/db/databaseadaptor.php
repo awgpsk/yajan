@@ -27,7 +27,7 @@ class DatabaseAdaptor
 
 		
 		$this->scnMgmt = new ScnMgmt();
-		
+		// echo "$YAJAN_DATA/db/current";
 		$this->dbNumber=file_get_contents("$YAJAN_DATA/db/current");
 		$this->syncMode=file_get_contents("$YAJAN_DATA/db/mode");
 		
@@ -295,8 +295,12 @@ class DatabaseAdaptor
 
 	public function autoCommit($val,$all='')
 	{
+		
 		if($all=='')
 		{
+			// echo ".".$this->dbNumber.".";
+			// print_r($this->dbHandels[$this->dbNumber]);
+			// echo "AS";
 			return $this->dbHandels[$this->dbNumber]->autoCommit($val);
 		}
 		else

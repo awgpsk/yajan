@@ -16,7 +16,7 @@ class YajanInfo
 		global $YAJAN_DATA,$FREAMWORK_PATH,$libVersion;
 		$this->enc = new ENC();
 		$this->infoFile = "$YAJAN_DATA/data/info.conf";
-		$this->infoFile = "$FREAMWORK_PATH/lib/$libVersion/data/info.conf";
+		// $this->infoFile = "$FREAMWORK_PATH/lib/$libVersion/data/info.conf";
 		if(!is_dir("$FREAMWORK_PATH/lib/$libVersion/data"))
 		{
 			mkdir("$FREAMWORK_PATH/lib/$libVersion/data");

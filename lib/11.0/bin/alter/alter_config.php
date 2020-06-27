@@ -41,7 +41,7 @@ class alter_config
 	}
 	function reset($cmd)
 	{
-		global $YAJAN_DATA,$CONFIGURATION,$CS,$AUTH,$_CONSOLE,$FREAMWORK_PATH,$libVersion;
+		global $YAJAN_DATA,$CONFIGURATION,$CS,$AUTH,$_CONSOLE,$FREAMWORK_PATH,$INFO,$libVersion;
 		exec("mkdir -p $YAJAN_DATA/tmp");
 		exec("chmod 777 $YAJAN_DATA/tmp");
 		exec("mkdir -p $YAJAN_DATA/log");
@@ -52,21 +52,14 @@ class alter_config
 		exec("mkdir -p $YAJAN_DATA/backup");
 
 
-
-		if(!file_exists("$YAJAN_DATA/db/current"))
-		{
-				file_put_contents("$YAJAN_DATA/db/current","0");
-		}
-		if(!file_exists("$YAJAN_DATA/db/mode"))
-		{
-				file_put_contents("$YAJAN_DATA/db/mode","all_db");
-		}
-		if(!file_exists("$YAJAN_DATA/db/scnlogmode"))
-		{
-				file_put_contents("$YAJAN_DATA/db/scnlogmode",'nolog');
-		}
+		file_put_contents("$YAJAN_DATA/db/current","0");
+		file_put_contents("$YAJAN_DATA/db/mode","all_db");
+		file_put_contents("$YAJAN_DATA/db/scnlogmode",'nolog');
+		
+		
 		$CONFIGURATION->clearConfig();
 		$CONFIGURATION->write();
+		
 		$AUTH->addUser("default","default");
 		$AUTH->addGroup("admin");
 		$AUTH->addGroup("security");
@@ -124,9 +117,15 @@ class alter_config
 		$_CONSOLE->run("alter config set ACCESS_LOG=false");
 		$_CONSOLE->run("alter config set BOOT_LOG=false");
 		
+		$INFO->addInfo("UPDATE_REVIEW_VERSION","1");
+		$INFO->write();
+		
+		
+
 		$php = "<?php
 		$YAJAN_DATA=\"$YAJAN_DATA\";
 		?>";
+		
 		//file_put_contents("$FREAMWORK_PATH/lib/$libVersion/parm.php",$php);
 		$_CONSOLE->run("alter config set YAJAN_DATA=$YAJAN_DATA");
 		$CS->showError('Config reset comlite');
