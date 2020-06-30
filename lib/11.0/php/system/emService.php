@@ -57,7 +57,11 @@ class EMErrorObject
 	}
 	function extra($value)
 	{
-			$this->extra=$value;
+		$this->extra=$value;
+	}
+	function setExtra($value)
+	{
+		$this->extra=$value;
 	}
 	function toArray()
 	{
@@ -105,6 +109,7 @@ class EMService
 	var $instanceId;
 	var $log;
 	var $list;
+	var $extra;
 	function __construct()
 	{
 		global $YAJAN_DATA,$APPLICATION_NAME,$CONFIGURATION,$LOG_PATH;
@@ -129,6 +134,10 @@ class EMService
 		{
 			$this->initDb();
 		}
+	}
+	function setExtra($extra)
+	{
+		$this->extra = $extra;
 	}
 	function initDb()
 	{
@@ -296,12 +305,13 @@ class EMService
 		{
 			if($this->list[$i]->type=="error")
 			{
-				$type = "errpr";
+				$type = "error";
 			}
 		}
 		$output=array();
 		$output["type"]=$type;
 		$output["mode"]="list";
+		$output["extra"]=$this->extra;
 		$output["message"]=$this->list;
 		return json_encode(($output));
 	}
