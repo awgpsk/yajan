@@ -285,6 +285,14 @@ class DBTable extends Recordset
 				$f = $c->getFormat();
 				$t = $c->getType();
 				$v = $this->data[$i][$c->getName()];
+				if($this->db->database->parm["driver"] == "oracle")
+				{
+					$v = str_replace("'","''",$v);
+				}
+				else
+				{
+					$v = str_replace("'","\'",$v);
+				}
 				if($t=="DATE")
 				{
 					if($f!="")
@@ -302,7 +310,7 @@ class DBTable extends Recordset
 				}
 				if(array_search($w, $whereList)!==false )
 				{
-					$where .= "$w = $v and";
+					$where .= "$w = $v and ";
 					if(array_search($w,$forceUpdateColumns)!==false)
 					{
 						$set .= "$w = $v,";
@@ -318,7 +326,7 @@ class DBTable extends Recordset
 				}
 			}
 			//echo $set;
-			$where = rtrim($where,"and");
+			$where = rtrim($where,"and ");
 			$set = rtrim($set,",");
 			
 			if($where!="")
@@ -378,6 +386,14 @@ class DBTable extends Recordset
 				if(array_search($colName,$excludeColumns)===false)
 				{
 					$v = $this->data[$i][$colName];
+					if($this->db->database->parm["driver"] == "oracle")
+					{
+						$v = str_replace("'","''",$v);
+					}
+					else
+					{
+						$v = str_replace("'","\'",$v);
+					}
 					if($this->skipColumn==$colName && $v=="")
 					{
 							$skip = true;
